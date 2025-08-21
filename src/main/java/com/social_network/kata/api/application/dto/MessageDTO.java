@@ -13,12 +13,13 @@ import lombok.Data;
 public class MessageDTO {
     private Long id;
     private String content;
+    private String author;
     private LocalDateTime timestamp;
     private List<String> mentions;
     private List<String> links;
 
     public static MessageDTO build(Message message) {
-        return new MessageDTO(message.getId(), message.getContent(),
+        return new MessageDTO(message.getId(), message.getContent(), message.getAuthor().getUsername(),
                 message.getTimestamp(), message.getMentions(), message.getLinks());
     }
 }
