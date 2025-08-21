@@ -2,8 +2,9 @@ package com.social_network.kata.api.presentation.rest;
 
 import org.springframework.web.bind.annotation.*;
 
+import com.social_network.kata.api.application.dto.DirectMessageDTO;
+import com.social_network.kata.api.application.dto.PostMessageRequestDTO;
 import com.social_network.kata.api.application.service.DirectMessageService;
-import com.social_network.kata.api.domain.model.DirectMessage;
 
 import java.util.List;
 
@@ -18,14 +19,20 @@ public class DirectMessageController {
     }
 
     @PostMapping("/{from}/to/{to}")
-    public DirectMessage sendMessage(@PathVariable String from,
+    public DirectMessageDTO sendMessage(@PathVariable String from,
             @PathVariable String to,
-            @RequestBody String content) {
-        return dmService.sendDirectMessage(from, to, content);
+            @RequestBody PostMessageRequestDTO request) {
+        return dmService.sendDirectMessage(from, to, request.getContent());
     }
 
     @GetMapping("/{username}")
-    public List<DirectMessage> getInbox(@PathVariable String username) {
+    public List<DirectMessageDTO> getInbox(@PathVariable String username) {
         return dmService.getInbox(username);
+    }
+
+    @GetMapping("/between/{me}/{other}")
+    public List<DirectMessageDTO> getConversation(@PathVariable String me,
+            @PathVariable String other) {
+        return dmService.getConversation(me, other);
     }
 }
