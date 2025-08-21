@@ -32,6 +32,6 @@ public class WallService {
         return messageRepo.findByUsers(users).stream()
                 .sorted(Comparator.comparing(Message::getTimestamp).reversed())
                 .map(MessageDTO::build)
-                .collect(Collectors.toList());
+                .toList();
     }
 }
