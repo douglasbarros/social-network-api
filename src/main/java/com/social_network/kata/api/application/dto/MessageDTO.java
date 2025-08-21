@@ -19,8 +19,7 @@ public class MessageDTO {
     private List<String> links;
 
     public static MessageDTO build(Message message) {
-        SimpleUserDTO author = new SimpleUserDTO(message.getAuthor().getId(),
-                message.getAuthor().getUsername());
+        SimpleUserDTO author = SimpleUserDTO.build(message.getAuthor());
         return new MessageDTO(message.getId(), message.getContent(), author,
                 message.getTimestamp(), message.getMentions(), message.getLinks());
     }

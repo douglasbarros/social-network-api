@@ -10,23 +10,21 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class DirectMessageDTO {
-    private Long id;
+        private Long id;
 
-    private SimpleUserDTO sender;
+        private SimpleUserDTO sender;
 
-    private SimpleUserDTO recipient;
+        private SimpleUserDTO recipient;
 
-    private String content;
+        private String content;
 
-    private LocalDateTime timestamp;
+        private LocalDateTime timestamp;
 
-    public static DirectMessageDTO build(DirectMessage directMessage) {
-        SimpleUserDTO sender = new SimpleUserDTO(directMessage.getSender().getId(),
-                directMessage.getSender().getUsername());
-        SimpleUserDTO recipient = new SimpleUserDTO(directMessage.getRecipient().getId(),
-                directMessage.getRecipient().getUsername());
+        public static DirectMessageDTO build(DirectMessage directMessage) {
+                SimpleUserDTO sender = SimpleUserDTO.build(directMessage.getSender());
+                SimpleUserDTO recipient = SimpleUserDTO.build(directMessage.getRecipient());
 
-        return new DirectMessageDTO(directMessage.getId(), sender, recipient, directMessage.getContent(),
-                directMessage.getTimestamp());
-    }
+                return new DirectMessageDTO(directMessage.getId(), sender, recipient, directMessage.getContent(),
+                                directMessage.getTimestamp());
+        }
 }
