@@ -13,5 +13,5 @@ public interface SpringDataMessageRepository extends JpaRepository<Message, Long
     @Query("select m from Message m where m.author in :authors")
     List<Message> findByAuthors(@Param("authors") List<User> authors);
 
-    List<Message> findDistinctByMentionsIn(@Param("mentions") List<String> mentions);
+    List<Message> findDistinctByMentionsIn(List<String> mentions);
 }
