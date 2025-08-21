@@ -1,0 +1,30 @@
+package com.social_network.kata.api.application.dto;
+
+import java.time.LocalDateTime;
+
+import com.social_network.kata.api.domain.model.DirectMessage;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
+public class DirectMessageDTO {
+        private Long id;
+
+        private SimpleUserDTO sender;
+
+        private SimpleUserDTO recipient;
+
+        private String content;
+
+        private LocalDateTime timestamp;
+
+        public static DirectMessageDTO build(DirectMessage directMessage) {
+                SimpleUserDTO sender = SimpleUserDTO.build(directMessage.getSender());
+                SimpleUserDTO recipient = SimpleUserDTO.build(directMessage.getRecipient());
+
+                return new DirectMessageDTO(directMessage.getId(), sender, recipient, directMessage.getContent(),
+                                directMessage.getTimestamp());
+        }
+}
