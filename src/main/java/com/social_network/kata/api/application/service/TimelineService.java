@@ -47,7 +47,6 @@ public class TimelineService {
         User user = userRepo.findByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException(username));
         return messageRepo.findByUser(user).stream()
-                .sorted(Comparator.comparing(Message::getTimestamp).reversed())
                 .map(message -> MessageDTO.build(message))
                 .collect(Collectors.toList());
     }
