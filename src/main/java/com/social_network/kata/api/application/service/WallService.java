@@ -31,7 +31,7 @@ public class WallService {
         users.add(user);
         return messageRepo.findByUsers(users).stream()
                 .sorted(Comparator.comparing(Message::getTimestamp).reversed())
-                .map(message -> MessageDTO.build(message))
+                .map(MessageDTO::build)
                 .collect(Collectors.toList());
     }
 }
