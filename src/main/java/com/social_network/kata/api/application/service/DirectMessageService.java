@@ -43,7 +43,8 @@ public class DirectMessageService {
     @Transactional(readOnly = true)
     public List<DirectMessage> getConversation(String u1, String u2) {
         User a = userRepo.findByUsername(u1).orElseThrow();
-        User b = userRepo.findByUsername(u2).orElseThrow();
+        User a = userRepo.findByUsername(u1).orElseThrow(() -> new UserNotFoundException(u1));
+        User b = userRepo.findByUsername(u2).orElseThrow(() -> new UserNotFoundException(u2));
         return dmRepo.findBetween(a, b).stream()
                 .sorted(Comparator.comparing(DirectMessage::getTimestamp))
                 .collect(Collectors.toList());
