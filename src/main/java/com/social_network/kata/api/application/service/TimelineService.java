@@ -36,8 +36,8 @@ public class TimelineService {
         if (content == null || content.isBlank())
             throw new IllegalArgumentException("Content cannot be empty");
         User author = userRepo.findByUsername(username).orElseGet(() -> userRepo.save(new User(username)));
-        List<String> mentions = extract(MENTION, content);
-        List<String> links = extract(LINK, content);
+        List<String> mentions = this.extract(MENTION, content);
+        List<String> links = this.extract(LINK, content);
         Message msg = new Message(content, author, LocalDateTime.now(), mentions, links);
         return MessageDTO.build(messageRepo.save(msg));
     }
@@ -47,7 +47,7 @@ public class TimelineService {
         User user = userRepo.findByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException(username));
         return messageRepo.findByUser(user).stream()
-                .map(message -> MessageDTO.build(message))
+                .map(MessageDTO::build)
                 .collect(Collectors.toList());
     }
 
@@ -55,11 +55,11 @@ public class TimelineService {
     public List<MessageDTO> getMentions(String username) {
         return messageRepo.findByMentions(Collections.singletonList(username)).stream()
                 .sorted(Comparator.comparing(Message::getTimestamp).reversed())
-                .map(message -> MessageDTO.build(message))
+                .map(MessageDTO::build)
                 .collect(Collectors.toList());
     }
 
-    private static List<String> extract(Pattern p, String content) {
+    private List<String> extract(Pattern p, String content) {
         List<String> out = new ArrayList<>();
         Matcher m = p.matcher(content);
         while (m.find())

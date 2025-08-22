@@ -11,6 +11,67 @@
 			"item": [
 				{
 					"name": "Post Message - Alice",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 201\", function () {",
+									"    pm.expect(pm.response.code).to.equal(201);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response content type is application/json\", function () {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.include(\"application/json\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response schema contains required properties\", function () {",
+									"    const responseData = pm.response.json();",
+									"",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData).to.have.all.keys('id', 'content', 'author', 'timestamp', 'mentions', 'links');",
+									"",
+									"    pm.expect(responseData.id).to.be.a('number');",
+									"    pm.expect(responseData.content).to.be.a('string');",
+									"    pm.expect(responseData.timestamp).to.be.a('string');",
+									"",
+									"    pm.expect(responseData.mentions).to.be.an('array');",
+									"    pm.expect(responseData.links).to.be.an('array');",
+									"",
+									"    responseData.mentions.forEach(function(mention) {",
+									"        pm.expect(mention).to.be.a('string');",
+									"    });",
+									"",
+									"    responseData.links.forEach(function(link) {",
+									"        pm.expect(link).to.be.a('string');",
+									"    });",
+									"",
+									"    pm.expect(responseData.author).to.be.an('object');",
+									"    pm.expect(responseData.author).to.have.all.keys('id', 'username');",
+									"    pm.expect(responseData.author.id).to.be.a('number');",
+									"    pm.expect(responseData.author.username).to.be.a('string');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Author username is a non-empty string\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.have.property('author').that.is.an('object');",
+									"    pm.expect(responseData.author).to.have.property('username').that.is.a('string').and.to.have.lengthOf.at.least(1, \"Author username should not be empty\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -67,6 +128,49 @@
 				},
 				{
 					"name": "Post Message (Bad Request)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 400\", function () {",
+									"    pm.expect(pm.response.code).to.eql(400);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response has required fields\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData).to.have.all.keys('timestamp', 'status', 'error', 'message', 'path');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Status is of type integer\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.have.property('status').that.is.a('number');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Message is a non-empty string\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.message).to.exist.and.to.be.a('string').and.to.have.lengthOf.at.least(1, \"Message should not be empty\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -214,6 +318,50 @@
 				},
 				{
 					"name": "Get Wall (User Not Found)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 404\", function () {",
+									"    pm.expect(pm.response.code).to.equal(404);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response contains required fields\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData).to.have.all.keys('timestamp', 'status', 'error', 'message', 'path');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response should indicate not found error\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData).to.have.property('status').that.equals(404);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Message is a non-empty string indicating the error reason\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.message).to.exist.and.to.be.a('string').and.to.have.lengthOf.at.least(1, \"Message should not be empty\");",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -533,6 +681,38 @@
 							]
 						},
 						"description": "Busca todas as mensagens que mencionam o usuário 'bob'."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Create user Alice",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"alice\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/user",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user"
+							]
+						},
+						"description": "Cria uma nova mensagem para o usuário 'alice'. Se 'alice' não existir, ela será criada."
 					},
 					"response": []
 				}

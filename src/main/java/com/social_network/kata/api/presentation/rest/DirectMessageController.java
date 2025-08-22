@@ -1,12 +1,17 @@
 package com.social_network.kata.api.presentation.rest;
 
-import org.springframework.web.bind.annotation.*;
-
 import com.social_network.kata.api.application.dto.DirectMessageDTO;
 import com.social_network.kata.api.application.dto.PostMessageRequestDTO;
 import com.social_network.kata.api.application.service.DirectMessageService;
 
 import java.util.List;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/dm")

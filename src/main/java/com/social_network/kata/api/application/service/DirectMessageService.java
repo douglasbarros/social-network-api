@@ -27,8 +27,8 @@ public class DirectMessageService {
 
     @Transactional
     public DirectMessageDTO sendDirectMessage(String from, String to, String content) {
-        User sender = userRepo.findByUsername(from).orElseGet(() -> userRepo.save(new User(from)));
-        User recipient = userRepo.findByUsername(to).orElseGet(() -> userRepo.save(new User(to)));
+        User sender = userRepo.findByUsername(from).orElseThrow(() -> new UserNotFoundException(from));
+        User recipient = userRepo.findByUsername(to).orElseThrow(() -> new UserNotFoundException(to));
         DirectMessage dm = new DirectMessage(sender, recipient, content, LocalDateTime.now());
         return DirectMessageDTO.build(dmRepo.save(dm));
     }
