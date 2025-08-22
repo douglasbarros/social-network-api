@@ -7,6 +7,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.social_network.kata.api.application.dto.CreateUserRequestDTO;
 import com.social_network.kata.api.application.dto.PostMessageRequestDTO;
 
 public class CLI {
@@ -17,7 +18,8 @@ public class CLI {
         System.out.println("Social Network CLI. Commands:");
         System.out.println("post <user> <message>");
         System.out.println("timeline <user>");
-        System.out.println("follow <follower> <followee>");
+        System.out.println("create <user>");
+        System.out.println("follow <follower> <followed>");
         System.out.println("wall <user>");
         System.out.println("dm <from> <to> <message>");
         System.out.println("inbox <user>");
@@ -45,6 +47,7 @@ public class CLI {
         switch (parts[0]) {
             case "post" -> post(parts[1], parts[2]);
             case "timeline" -> get("/timeline/" + parts[1]);
+            case "create" -> create(parts[1]);
             case "follow" -> follow(parts[1], parts[2]);
             case "wall" -> get("/wall/" + parts[1]);
             case "dm" -> {
@@ -64,8 +67,14 @@ public class CLI {
         request("POST", "/timeline/" + user, new ObjectMapper().writeValueAsString(content));
     }
 
-    private static void follow(String follower, String followee) throws Exception {
-        request("POST", "/follow/" + follower + "/to/" + followee, "");
+    private static void create(String user) throws Exception {
+        CreateUserRequestDTO content = new CreateUserRequestDTO();
+        content.setName(user);
+        request("POST", "/user", new ObjectMapper().writeValueAsString(content));
+    }
+
+    private static void follow(String follower, String followed) throws Exception {
+        request("POST", "/follow/" + follower + "/to/" + followed, "");
     }
 
     private static void sendDM(String from, String to, String message) throws Exception {

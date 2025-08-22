@@ -1,6 +1,9 @@
 package com.social_network.kata.api.presentation.rest;
 
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.social_network.kata.api.application.service.FollowService;
 
