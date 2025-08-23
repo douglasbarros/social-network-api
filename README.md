@@ -30,8 +30,8 @@ Run the following commands:
 
 > mvn clean package  
 > mvn spring-boot:run  
-You can access the API at <http://localhost:8080/api/v1>
-You can use the collection-postman.json  
+> You can access the API at <http://localhost:8080/api/v1>  
+> You can use the collection-postman.json  
 
 ### CLI
 
