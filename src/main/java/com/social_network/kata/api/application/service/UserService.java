@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.social_network.kata.api.domain.repository.UserRepositoryPort;
 import com.social_network.kata.api.application.dto.SimpleUserDTO;
+import com.social_network.kata.api.domain.exception.UserAlreadyExistsException;
 import com.social_network.kata.api.domain.model.User;
 
 import java.util.Optional;
@@ -25,7 +26,7 @@ public class UserService {
         Optional<User> existingUser = userRepo.findByUsername(username);
 
         if (existingUser.isPresent()) {
-            throw new IllegalArgumentException("User with username '" + username + "' already exists");
+            throw new UserAlreadyExistsException(username);
         }
 
         User saved = userRepo.save(new User(username));
