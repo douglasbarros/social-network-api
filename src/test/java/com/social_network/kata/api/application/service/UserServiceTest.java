@@ -1,6 +1,7 @@
 package com.social_network.kata.api.application.service;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,6 +10,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import com.social_network.kata.api.application.dto.SimpleUserDTO;
+import com.social_network.kata.api.domain.exception.UserAlreadyExistsException;
 import com.social_network.kata.api.domain.model.User;
 import com.social_network.kata.api.domain.repository.UserRepositoryPort;
 
@@ -45,8 +47,8 @@ class UserServiceTest {
         String username = "doug";
         when(userRepo.findByUsername(username)).thenReturn(Optional.of(new User(username)));
 
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
+        UserAlreadyExistsException exception = assertThrows(
+                UserAlreadyExistsException.class,
                 () -> userService.create(username));
         assertEquals("User with username '" + username + "' already exists", exception.getMessage());
         verify(userRepo).findByUsername(username);
