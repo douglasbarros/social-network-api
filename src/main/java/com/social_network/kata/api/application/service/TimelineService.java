@@ -47,12 +47,15 @@ public class TimelineService {
         User user = userRepo.findByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException(username));
         return messageRepo.findByUser(user).stream()
+                .sorted(Comparator.comparing(Message::getTimestamp))
                 .map(MessageDTO::build)
                 .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public List<MessageDTO> getMentions(String username) {
+        if (username == null || username.isBlank())
+            throw new IllegalArgumentException("Username cannot be empty");
         return messageRepo.findByMentions(Collections.singletonList(username)).stream()
                 .sorted(Comparator.comparing(Message::getTimestamp).reversed())
                 .map(MessageDTO::build)
